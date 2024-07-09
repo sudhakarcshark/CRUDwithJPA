@@ -6,12 +6,14 @@ import com.sb.curdwithjpa.model.CustomerModel;
 import com.sb.curdwithjpa.repository.CustomerRepository;
 import com.sb.curdwithjpa.request.CustomerRequest;
 import com.sb.curdwithjpa.response.APIResponse;
+import com.sb.curdwithjpa.response.CustomerResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static com.sb.curdwithjpa.constants.AppConstants.SUCCESSFULLY_STORED;
-import static com.sb.curdwithjpa.constants.AppConstants.SUCCESS_CODE;
+import java.util.List;
+
+import static com.sb.curdwithjpa.constants.AppConstants.*;
 import static com.sb.curdwithjpa.mapper.CustomerMapper.modelToResponseMapper;
 import static com.sb.curdwithjpa.mapper.CustomerMapper.requestToModel;
 
@@ -38,7 +40,16 @@ public class CustomerServiceImple implements CustomerService {
 
     @Override
     public ResponseEntity<APIResponse> getCustomers() {
-        return null;
+        List<CustomerModel> customerDetails = customerRepository.findAll();
+        List<CustomerResponse> customers = customerDetails.stream()
+                .map(customerModel->modelToResponseMapper(customerModel)).toList();
+        return ResponseEntity.ok(
+                APIResponse.builder()
+                        .errorCode(SUCCESS_CODE)
+                        .errorMessage(SUCCESSFULLY_RETRIEVED)
+                        .data(customers)
+                        .build()
+        );
     }
 
     @Override
