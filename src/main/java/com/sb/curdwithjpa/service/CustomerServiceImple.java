@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.sb.curdwithjpa.constants.AppConstants.*;
 import static com.sb.curdwithjpa.mapper.CustomerMapper.modelToResponseMapper;
@@ -54,7 +55,28 @@ public class CustomerServiceImple implements CustomerService {
 
     @Override
     public ResponseEntity<APIResponse> getByCustomerId(long customerId) {
-        return null;
+
+      Optional<CustomerModel> optionalCustomerModel = customerRepository.findById(customerId);
+      if (!optionalCustomerModel.isPresent()){
+          return ResponseEntity.ok(
+                  APIResponse.builder()
+                          .errorCode(CUSTOMER_NOT_EXISTS_CODE)
+                          .errorMessage(CUSTOMER_NOT_EXISTS)
+                          .data(List.of())
+                          .build()
+          );
+      }
+
+    CustomerModel model = optionalCustomerModel.get();
+      CustomerResponse response = modelToResponseMapper(model);
+      return ResponseEntity.ok(
+              APIResponse.builder()
+                      .errorCode(SUCCESS_CODE)
+                      .errorMessage(SUCCESSFULLY_RETRIEVED)
+                      .data(response)
+                      .build()
+      );
+
     }
 
     @Override
