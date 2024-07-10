@@ -81,11 +81,54 @@ public class CustomerServiceImple implements CustomerService {
 
     @Override
     public ResponseEntity<APIResponse> deleteByCustomerId(long customerId) {
-        return null;
+      Optional<CustomerModel> modelCustomer = customerRepository.findById(customerId);
+      if (!modelCustomer.isPresent()){
+          return ResponseEntity.ok(
+                  APIResponse.builder()
+                          .errorCode(CUSTOMER_NOT_EXISTS_CODE)
+                          .errorMessage(CUSTOMER_NOT_EXISTS)
+                          .data(List.of())
+                          .build()
+          );
+      }
+      customerRepository.deleteById(customerId);
+      return ResponseEntity.ok(
+              APIResponse.builder()
+                      .errorCode(SUCCESS_CODE)
+                      .errorMessage(SUCCESSFULLY_DELETED)
+                      .data(List.of())
+                      .build()
+      );
+
     }
 
     @Override
     public ResponseEntity<APIResponse> upDateCustomerDetails(long customerId, CustomerRequest request) {
-        return null;
+      Optional<CustomerModel> modelCustomer = customerRepository.findById(customerId);
+      if (modelCustomer.isPresent()){
+          CustomerModel model = modelCustomer.get();
+          model.setCustomerName(request.getCustomerName());
+          model.setCustomerAge(request.getCustomerAge());
+          model.setCustomerMobileNumber(request.getCustomerMobileNumber());
+          model.setCustomerEmailAddress(request.getCustomerEmailAddress());
+          model.setCustomerAddress(request.getCustomerAddress());
+          model = customerRepository.save(model);
+
+          return ResponseEntity.ok(
+                  APIResponse.builder()
+                          .errorCode(SUCCESS_CODE)
+                          .errorMessage(SUCCESSFULLY_UPDATED)
+                          .data(modelToResponseMapper(model))
+                          .build()
+          );
+      }else {
+          return ResponseEntity.ok(
+                  APIResponse.builder()
+                          .errorCode(CUSTOMER_NOT_EXISTS_CODE)
+                          .errorMessage(CUSTOMER_NOT_EXISTS)
+                          .data(List.of())
+                          .build()
+          );
+      }
     }
 }
