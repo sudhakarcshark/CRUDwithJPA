@@ -5,6 +5,7 @@ import com.sb.curdwithjpa.enums.CustomerStatus;
 import com.sb.curdwithjpa.model.CustomerModel;
 import com.sb.curdwithjpa.repository.CustomerRepository;
 import com.sb.curdwithjpa.request.CustomerRequest;
+import com.sb.curdwithjpa.request.EmailRequest;
 import com.sb.curdwithjpa.response.APIResponse;
 import com.sb.curdwithjpa.response.CustomerResponse;
 import lombok.RequiredArgsConstructor;
@@ -131,4 +132,33 @@ public class CustomerServiceImple implements CustomerService {
           );
       }
     }
+
+    @Override
+    public ResponseEntity<APIResponse> updateEmailAddress(long customerId, EmailRequest request) {
+
+       Optional<CustomerModel> modelEmailUpdate = customerRepository.findById(customerId);
+       if (modelEmailUpdate.isPresent()){
+           CustomerModel customerModel = modelEmailUpdate.get();
+           customerModel.setCustomerEmailAddress(request.getEmailAddress());
+           customerModel = customerRepository.save(customerModel);
+
+           return ResponseEntity.ok(
+                   APIResponse.builder()
+                           .errorCode(SUCCESS_CODE)
+                           .errorMessage(SUCCESSFULLY_UPDATED)
+                           .data(modelToResponseMapper(customerModel))
+                           .build()
+           );
+
+       }
+
+       return ResponseEntity.ok(
+               APIResponse.builder()
+                       .errorCode(CUSTOMER_NOT_EXISTS_CODE)
+                       .errorMessage(CUSTOMER_NOT_EXISTS)
+                       .data(List.of())
+                       .build()
+       );
+    }
+
 }

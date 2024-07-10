@@ -2,6 +2,7 @@ package com.sb.curdwithjpa.controller;
 
 
 import com.sb.curdwithjpa.request.CustomerRequest;
+import com.sb.curdwithjpa.request.EmailRequest;
 import com.sb.curdwithjpa.response.APIResponse;
 import com.sb.curdwithjpa.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,14 @@ public class CustomerController {
 
         return customerService.upDateCustomerDetails(customerId, request);
     }
+
+    @PatchMapping("/updateEmailAddress/{customerId}")
+    public ResponseEntity<APIResponse> upDateEmailAddress(@PathVariable long customerId, @RequestBody EmailRequest request) {
+
+        return customerService.updateEmailAddress(customerId, request);
+    }
 }
+
 
 
 
