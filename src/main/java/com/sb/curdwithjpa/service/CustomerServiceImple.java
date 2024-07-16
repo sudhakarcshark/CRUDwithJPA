@@ -32,9 +32,10 @@ public class CustomerServiceImple implements CustomerService {
     public ResponseEntity<APIResponse> createCustomer(CustomerRequest request) {
 
         if (customerRepository.findByCustomerMobileNumber(request.getCustomerMobileNumber()).isPresent()){
-            throw new CustomerAlreadyExistException("Customer Already Registred");
+            throw new CustomerAlreadyExistException(REGISTRATION_FAILED);
+        } else if (customerRepository.findByCustomerEmailAddress(request.getCustomerEmailAddress()).isPresent()) {
+            throw new CustomerAlreadyExistException(REGISTRATION_FAILED);
         }
-
         CustomerModel customerModel = customerRepository.save(requestToModel(request));
         return ResponseEntity.ok(
                 APIResponse.builder()
