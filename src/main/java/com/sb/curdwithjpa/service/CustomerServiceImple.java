@@ -1,6 +1,7 @@
 package com.sb.curdwithjpa.service;
 
 
+import com.sb.curdwithjpa.Exceptions.CustomerAlreadyExistException;
 import com.sb.curdwithjpa.enums.CustomerStatus;
 import com.sb.curdwithjpa.model.CustomerModel;
 import com.sb.curdwithjpa.repository.CustomerRepository;
@@ -29,6 +30,10 @@ public class CustomerServiceImple implements CustomerService {
 
     @Override
     public ResponseEntity<APIResponse> createCustomer(CustomerRequest request) {
+
+        if (customerRepository.findByCustomerMobileNumber(request.getCustomerMobileNumber()).isPresent()){
+            throw new CustomerAlreadyExistException("Customer Already Registred");
+        }
 
         CustomerModel customerModel = customerRepository.save(requestToModel(request));
         return ResponseEntity.ok(
