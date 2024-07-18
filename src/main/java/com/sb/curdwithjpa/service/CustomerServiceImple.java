@@ -32,9 +32,9 @@ public class CustomerServiceImple implements CustomerService {
     public ResponseEntity<APIResponse> createCustomer(CustomerRequest request) {
 
         if (customerRepository.findByCustomerMobileNumber(request.getCustomerMobileNumber()).isPresent()){
-            throw new CustomerAlreadyExistException(REGISTRATION_FAILED);
+            throw new CustomerAlreadyExistException(MOBILE_NO_EXISTS);
         } else if (customerRepository.findByCustomerEmailAddress(request.getCustomerEmailAddress()).isPresent()) {
-            throw new CustomerAlreadyExistException(REGISTRATION_FAILED);
+            throw new CustomerAlreadyExistException(EMAIL_ID_EXISTS);
         }
         CustomerModel customerModel = customerRepository.save(requestToModel(request));
         return ResponseEntity.ok(
@@ -165,6 +165,7 @@ public class CustomerServiceImple implements CustomerService {
                        .data(List.of())
                        .build()
        );
+
     }
 
 }

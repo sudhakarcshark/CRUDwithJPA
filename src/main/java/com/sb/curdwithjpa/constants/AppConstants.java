@@ -15,5 +15,6 @@ public class AppConstants {
     public static final String SUCCESSFULLY_UPDATED = "Data Successfully Updated";
     public static final Integer CUSTOMER_NOT_EXISTS_CODE = 900;
     public static final String CUSTOMER_NOT_EXISTS = "Customer is not registered";
-    public static final String REGISTRATION_FAILED = "Customer Already Registered";
+    public static final String MOBILE_NO_EXISTS = "Mobile Number Is Already Registered";
+    public static final String EMAIL_ID_EXISTS =  "Email_Id Is Already Registered";
 }
