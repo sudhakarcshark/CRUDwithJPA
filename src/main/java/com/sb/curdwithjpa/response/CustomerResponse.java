@@ -2,6 +2,7 @@ package com.sb.curdwithjpa.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sb.curdwithjpa.enums.CustomerStatus;
+import com.sb.curdwithjpa.request.CustomerAddress;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class CustomerResponse {
     private String customerEmailAddress;
 
     @JsonProperty("customerAddress")
-    private String customerAddress;
+    private AddressResponse customerAddress;
 
     @JsonProperty("status")
     private CustomerStatus status;

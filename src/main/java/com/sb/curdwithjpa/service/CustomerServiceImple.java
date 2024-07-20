@@ -118,7 +118,7 @@ public class CustomerServiceImple implements CustomerService {
           model.setCustomerAge(request.getCustomerAge());
           model.setCustomerMobileNumber(request.getCustomerMobileNumber());
           model.setCustomerEmailAddress(request.getCustomerEmailAddress());
-          model.setCustomerAddress(request.getCustomerAddress());
+         // model.setCustomerAddress(request.getCustomerAddress());
           model = customerRepository.save(model);
 
           return ResponseEntity.ok(

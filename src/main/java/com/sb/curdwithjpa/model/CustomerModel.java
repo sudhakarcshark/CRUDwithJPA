@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Builder(toBuilder = true)
 @Entity
-@Table(name = "customer_details")
+@Table(name = "customer_profile")
 public class CustomerModel implements Serializable {
 
     @Id
@@ -40,8 +40,9 @@ public class CustomerModel implements Serializable {
     @Column(name = "customerEmailAddress")
     private String customerEmailAddress;
 
-    @Column(name = "customerAddress")
-    private String customerAddress;
+    @OneToOne(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id",referencedColumnName = "id")
+    private AddressModel customerAddress;
 
     @Column(name = "status")
     private CustomerStatus status;
